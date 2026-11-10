@@ -1,0 +1,30 @@
+/* ===== Avatar interativo ===== */
+.avatar {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  user-select: none;
+}
+
+/* todos os frames empilhados no mesmo lugar; só o ativo aparece (troca instantânea, sem fade) */
+.avatar__stage {
+  position: absolute;
+  inset: 0;
+  /* a cabeça gira/desloca via transform aplicado pelo JS a cada quadro; sem transition CSS (o JS já suaviza) */
+  transform-origin: 50% 55%;
+  will-change: transform;
+}
+.avatar__stage img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  /* cada frame já fica numa camada própria da GPU: a troca não precisa redesenhar nada */
+  will-change: opacity;
+}
+.avatar__stage img.is-base { opacity: 1; z-index: 0; }   /* rede de segurança: a cabeça nunca some */
+.avatar__stage img.is-active:not(.is-base) { opacity: 1; z-index: 1; }

@@ -1,0 +1,85 @@
+<!doctype html>
+<!--
+  Fonte do PDF do currículo (base: curriculo_matheus_amorim.docx de 08/11/2026 + atualizações de 08/11).
+  Para gerar o PDF de novo depois de editar este arquivo:
+    "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" --headless --disable-gpu --no-pdf-header-footer
+      --print-to-pdf="public/curriculo-matheus-ricotta.pdf" "cv/curriculo.html"
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Currículo — Matheus Ricotta Pereira Amorim</title>
+<style>
+  @page { size: A4; margin: 9mm 14mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Times New Roman', Times, serif; color: #1a1a1a; font-size: 9.9pt; line-height: 1.24; }
+  h1 { text-align: center; color: #1F3864; font-size: 19pt; letter-spacing: .3pt; }
+  .contact { text-align: center; color: #555; font-size: 9.6pt; margin: 3pt 0 8pt; }
+  .contact span + span::before { content: '  |  '; white-space: pre; color: #999; }
+  h2 { color: #1F3864; font-size: 11.5pt; text-transform: uppercase; border-bottom: 1.2pt solid #1F3864; padding-bottom: 1.5pt; margin: 6pt 0 2.5pt; }
+  .row { display: flex; justify-content: space-between; gap: 12pt; margin-top: 3pt; }
+  .row b { font-weight: 700; }
+  .when { font-style: italic; color: #666; white-space: nowrap; }
+  ul { margin: 1.5pt 0 0 13pt; }
+  li { margin: .5pt 0; }
+  p { margin-top: 2pt; }
+  a { color: inherit; text-decoration: none; }
+  @media screen { html { background: #fff; } body { padding: 9mm 14mm; } }
+</style>
+</head>
+<body>
+  <h1>MATHEUS RICOTTA PEREIRA AMORIM</h1>
+  <div class="contact">
+    <span>ricottamatheus@gmail.com</span><span>(21) 98190-8736</span><span>github.com/ricottamth</span><span>Niterói/Rio de Janeiro, RJ</span>
+  </div>
+
+  <h2>Objetivo</h2>
+  <p>Estágio em Sistemas de Informação, com interesse em Engenharia de IA, comunicação e gestão. Perfil versátil, que une base técnica (Python, redes, desenvolvimento web com IA) a experiência em marketing, eventos e vendas, buscando aplicar IA na prática em um ambiente de aprendizado.</p>
+
+  <h2>Formação acadêmica</h2>
+  <div class="row"><span><b>Bacharelado em Sistemas de Informação</b> — Universidade Federal Fluminense (UFF)</span><span class="when">2024 – atual</span></div>
+
+  <h2>Experiência profissional</h2>
+  <div class="row"><span><b>Desenvolvedor Web</b> — Freelancer · MTH TECH</span><span class="when">2026 – atual</span></div>
+  <ul>
+    <li>Site no ar: site institucional do escritório Amorim Abraão Advogados (amorimabraao.com.br), com domínio próprio, SEO, feed automático de notícias do STF e STJ e páginas de privacidade e cookies.</li>
+    <li>Criação de landing pages demonstrativas para negócios locais de Niterói, com apoio de ferramentas de IA, versionamento no GitHub e deploy na Vercel.</li>
+    <li>Portfólio próprio (marca MTH TECH) em React, TypeScript e Tailwind, com avatar 3D interativo que segue o cursor, desenvolvido com apoio de IA (Claude Code).</li>
+    <li>Prospecção e abordagem comercial de clientes, por telefone e WhatsApp, incluindo negócios no exterior (EUA).</li>
+  </ul>
+  <div class="row"><span><b>Produtor (Infraestrutura)</b> — Natura, via A-Lab / Grupo Dreamers</span><span class="when">Rock in Rio 2026</span></div>
+  <ul><li>Atuou na produção de infraestrutura da ação de marketing da Natura durante o Rock in Rio 2026, cobrindo a marca no evento pela A-Lab, agência de marketing do Grupo Dreamers.</li></ul>
+  <div class="row"><span><b>Community Manager (CM)</b> — CLEAR, via Grupo Dreamers</span><span class="when">Copa do Mundo</span></div>
+  <ul><li>Respondeu publicações em tempo real nas redes sociais da marca durante a Copa do Mundo.</li></ul>
+  <div class="row"><span><b>Equipe de Marketing e Produção</b> — Eisenbahn (patrocinadora), via Grupo Dreamers</span><span class="when">THE TOWN</span></div>
+  <ul><li>Atuou na produção do evento e na cobertura da marca patrocinadora, dando suporte às ações de marketing durante THE TOWN.</li></ul>
+  <div class="row"><span><b>Atendente e Operador de Caixa</b> — Delivery</span></div>
+  <ul><li>Atendimento ao cliente e operação de caixa, além de gestão e contagem de estoque.</li></ul>
+
+  <h2>Projetos</h2>
+  <div class="row"><span><b>SaaS de Gestão de Estoque com IA</b> — em planejamento</span></div>
+  <ul><li>Plataforma multiempresa de gestão de estoque com foco em segurança, com stack em Next.js, TypeScript, Supabase/PostgreSQL e Docker.</li></ul>
+  <div class="row"><span><b>PIX para Todos</b> — projeto em grupo — Introdução à IHC</span><span class="when">2026.2</span></div>
+  <ul><li>Pesquisa e prototipação para melhorar a experiência de idosos com pouca familiaridade tecnológica ao fazer transferências via Pix: pesquisa com 27 respostas, entrevistas, personas e protótipo no Figma. Portfólio publicado: <span style="white-space:nowrap">uff-arthurmta.github.io/PortofolioIHC</span></li></ul>
+  <div class="row"><span><b>Chat TCP Multiusuário</b> — projeto individual — Redes de Computadores</span></div>
+  <ul><li>Bate-papo multiusuário em Python com sockets TCP, multithreading e padrão Observer, apresentado em aula. Inclui labs de Wireshark (HTTP) e sockets UDP/TCP.</li></ul>
+
+  <h2>Cursos e certificações</h2>
+  <p><b>Conceitos de IA para desenvolvedores e profissionais de tecnologia</b> — Microsoft Learn</p>
+
+  <h2>Atividades extracurriculares</h2>
+  <ul><li>Integrante de equipe competitiva universitária, classificada para os Jogos Universitários Brasileiros (JUBS).</li></ul>
+
+  <h2>Habilidades</h2>
+  <ul>
+    <li><b>Web:</b> HTML, CSS, JavaScript, TypeScript, React, Next.js, Tailwind · <b>Back-end e dados:</b> Python, Supabase, PostgreSQL</li>
+    <li><b>Ferramentas:</b> Git/GitHub, Docker, VS Code, Vercel, Obsidian, Orca</li>
+    <li><b>IA:</b> Claude (Claude Code), ChatGPT, Gemini; conceitos de IA e desenvolvimento com apoio de IA</li>
+    <li><b>Fundamentos:</b> C, Redes de Computadores (TCP/UDP), Estruturas de Dados, multithreading, noções de UX (IHC)</li>
+    <li><b>Comportamentais:</b> comunicação, vendas e prospecção, trabalho em equipe, organização e gestão, atendimento ao público</li>
+  </ul>
+
+  <h2>Idiomas</h2>
+  <p><b>Português:</b> nativo &nbsp;|&nbsp; <b>Inglês:</b> intermediário/avançado &nbsp;|&nbsp; <b>Francês:</b> noções (11 anos de estudo escolar)</p>
+</body>
+</html>

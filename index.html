@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/brand/mth-symbol.svg" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/brand/favicon.png" />
+    <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0C0C0C" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MTH TECH · Matheus Ricotta — Desenvolvedor Web</title>
+    <meta name="description" content="MTH TECH, portfólio de Matheus Ricotta: desenvolvedor web e estudante de Sistemas de Informação na UFF, em Niterói/RJ." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // modo captura (?figma): marca o <html> para o CSS fixar alturas e parar animações
+      if (/[?&]figma\b/.test(location.search)) document.documentElement.classList.add('capture');
+    </script>
+    <script>
+      // Diagnóstico remoto: abra o site com ?debug no fim do endereço para ver, na própria tela,
+      // o aparelho/navegador e qualquer erro (inclusive os que acontecem antes do site iniciar).
+      (function () {
+        if (!/[?&]debug\b/.test(location.search)) return;
+        var t0 = Date.now(), lines = [];
+        var box = document.createElement('pre');
+        box.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:2147483647;max-height:45vh;overflow:auto;margin:0;padding:10px;background:#fff;color:#000;font:11px/1.35 monospace;white-space:pre-wrap;border-radius:10px;box-shadow:0 4px 20px #0008';
+        function add(s) { lines.push('[' + ((Date.now() - t0) / 1000).toFixed(1) + 's] ' + s); box.textContent = lines.join('\n'); }
+        add(navigator.userAgent);
+        add('tela ' + innerWidth + 'x' + innerHeight + ' @' + devicePixelRatio + 'x');
+        window.addEventListener('error', function (e) { add('ERRO: ' + (e.message || (e.target && (e.target.src || e.target.href)) || e) + (e.filename ? ' @ ' + e.filename.split('/').pop() + ':' + e.lineno : '')); }, true);
+        window.addEventListener('unhandledrejection', function (e) { add('PROMISE: ' + (e.reason && (e.reason.stack || e.reason.message) || e.reason)); });
+        var ce = console.error; console.error = function () { add('console.error: ' + Array.prototype.map.call(arguments, String).join(' ').slice(0, 300)); return ce.apply(console, arguments); };
+        document.addEventListener('DOMContentLoaded', function () { document.body.appendChild(box); add('HTML carregado'); });
+        window.addEventListener('load', function () { add('página carregada; seções: ' + document.querySelectorAll('main section').length); });
+        setTimeout(function () {
+          var h = document.querySelector('h1');
+          add('após 4s: seções=' + document.querySelectorAll('main section').length + ' título=' + (h ? getComputedStyle(h).opacity : 'ausente'));
+        }, 4000);
+      })();
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

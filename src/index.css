@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { background: #0C0C0C; font-family: 'Kanit', sans-serif; }
+/* margem lateral única da página: header, nome do hero, texto e botão usam a mesma */
+:root { --page-padding: clamp(24px, 4vw, 64px); }
+html { scroll-padding-top: 80px; }  /* âncoras do menu não ficam embaixo do header fixo */
+
+.hero-heading {
+  background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Hero avatar: centred in the hero */
+.hero-portrait-wrap {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 400px;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  touch-action: pan-y;
+}
+@media (min-width: 640px) { .hero-portrait-wrap { width: 500px; } }
+@media (min-width: 768px) { .hero-portrait-wrap { width: 600px; } }
+@media (min-width: 1024px) { .hero-portrait-wrap { width: clamp(640px, 78vh, 46vw); } }
+
+/* Telas de toque (celular/tablet): menos memória de vídeo.
+   iPhones têm limite de memória gráfica por página; passando dele, a página trava ou fica preta.
+   Aqui desligamos camadas e desfoques que no toque não fazem diferença visível. */
+@media (hover: none), (pointer: coarse) {
+  .avatar__stage, .avatar__stage img { will-change: auto !important; }
+  [class*="backdrop-blur"] { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+  [data-glow]::before, [data-glow]::after, [data-glow] [data-glow] { display: none !important; }
+  .hero-glow { display: none !important; }
+}
+
+/* Logos do "Sobre mim" no desktop: levemente inclinados e flutuando devagar; no hover endireitam e param. */
+.logo-float {
+  transform: rotate(var(--tilt, 0deg));
+  animation: logo-float 8s ease-in-out infinite alternate;
+  transition: transform .35s ease;
+}
+.logo-float:hover, .logo-float:focus-within { animation: none; transform: rotate(0deg) scale(1.03); }
+@keyframes logo-float {
+  from { transform: rotate(var(--tilt, 0deg)) translateY(-6px); }
+  to   { transform: rotate(calc(var(--tilt, 0deg) * 0.6)) translateY(6px); }
+}
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .logo-float, .logo-float:hover { animation: none; }
+}
+
+/* Modo captura (?figma): altura fixa no hero e no "Sobre mim" (ferramentas de captura às vezes usam
+   uma janela da altura da página inteira, o que esticaria o 100vh) e nada se movendo. */
+.capture .h-screen { height: 900px !important; }
+.capture .min-h-screen { min-height: 900px !important; }
+.capture *, .capture *::before, .capture *::after { animation: none !important; transition: none !important; }
+
+/* Nome do hero: a largura do texto (~8.7em em uma linha, ~4.6em por linha no celular) cabe exatamente
+   entre as duas margens, então fica com a mesma distância das bordas e o avatar corta o meio dele. */
+.hero-name { font-size: calc((100vw - 2 * var(--page-padding)) / 4.6); }
+@media (min-width: 768px) { .hero-name { font-size: calc((100vw - 2 * var(--page-padding)) / 9); } }
+
+/* Balão de fala do avatar */
+.speech-anchor { position: absolute; left: 50%; top: 4%; transform: translateX(-50%); z-index: 30; pointer-events: none; }
+.speech-bubble {
+  position: relative; margin: 0; width: max-content; max-width: min(280px, calc(100vw - 2 * var(--page-padding)));
+  padding: 14px 20px; border-radius: 22px; background: #F4F7FA; color: #0C0C0C;
+  font-weight: 600; font-size: 16px; line-height: 1.3; text-align: center;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .35), 0 0 0 1px rgba(255, 255, 255, .6);
+  transform-origin: 50% 100%; animation: bubble-pop 250ms cubic-bezier(.34, 1.56, .64, 1) both;
+}
+.speech-bubble::after {   /* rabinho apontando para a cabeça */
+  content: ''; position: absolute; left: 50%; bottom: -8px; width: 18px; height: 18px; margin-left: -9px;
+  background: #F4F7FA; transform: rotate(45deg); border-radius: 0 0 4px 0;
+}
+@keyframes bubble-pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }
+/* desktop largo: o balão vai para o alto à direita da cabeça, com o rabinho apontando para baixo/esquerda */
+@media (min-width: 1280px) {
+  .speech-anchor { left: 66%; top: 8%; transform: none; }
+  .speech-bubble { transform-origin: 0% 100%; border-bottom-left-radius: 6px; }
+  .speech-bubble::after { left: 18px; margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .speech-bubble { animation: none; } }
+
+/* ================= Performance e animações das logos =================
+   Tudo aqui anima só transform e opacity (e stroke-dashoffset no SVG), que rodam no compositor
+   na taxa da tela (60/120 Hz) sem recalcular layout nem repintar. */
+
+/* Loops pausam quando o bloco está fora da tela (classe ligada por useViewport, sem re-render). */
+.loop-paused, .loop-paused *, .loop-paused *::before, .loop-paused *::after { animation-play-state: paused !important; }
+
+/* Entrada em cascata: .reveal-item dentro de um bloco com useViewport({ reveal: true }).
+   Antes do JS (ou sem IntersectionObserver) tudo fica visível: o conteúdo nunca depende da animação. */
+.reveal-pending .reveal-item { opacity: 0; }
+.reveal-in .reveal-item {
+  animation: reveal-up .55s cubic-bezier(.22, 1, .36, 1) both;
+  animation-delay: calc(var(--i, 0) * var(--stagger, 40ms));
+}
+.reveal-in .reveal-item.reveal-scale { animation-name: reveal-scale; animation-duration: .7s; }
+@keyframes reveal-up { from { opacity: 0; transform: translate3d(0, 14px, 0); } to { opacity: 1; transform: none; } }
+@keyframes reveal-scale { from { opacity: 0; transform: scale(.9); } to { opacity: 1; transform: none; } }
+@keyframes reveal-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* Logos de tecnologia: flutuação sutil (cada uma com fase diferente) + destaque no hover/toque. */
+.tech-float { display: block; animation: tech-float 3.4s ease-in-out infinite alternate; }
+@keyframes tech-float { from { transform: translate3d(0, -2px, 0); } to { transform: translate3d(0, 2px, 0); } }
+.tech-icon { display: block; transition: transform .35s cubic-bezier(.34, 1.56, .64, 1); }
+.tech-dim { opacity: .6; transition: opacity .3s ease; }
+.tech-accent { opacity: 0; transition: opacity .3s ease; }
+.tech-logo:active .tech-icon { transform: scale(1.18); }
+.tech-logo:active .tech-dim { opacity: 1; }
+.tech-logo:active .tech-accent { opacity: 1; }
+@media (hover: hover) {
+  .tech-logo:hover .tech-icon { transform: scale(1.18); }
+  .tech-logo:hover .tech-dim { opacity: 1; }
+  .tech-logo:hover .tech-accent { opacity: 1; }
+}
+
+/* Cards das marcas: brilho que passa por cima de tempos em tempos (só translate). */
+.brand-card::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 30%, rgba(169, 164, 245, .38) 47%, rgba(0, 229, 255, .28) 53%, transparent 70%);
+  transform: translate3d(-120%, 0, 0);
+  animation: brand-shine 7s ease-in-out infinite;
+  animation-delay: var(--shine-delay, 1s);
+}
+@keyframes brand-shine { 0% { transform: translate3d(-120%, 0, 0); } 16%, 100% { transform: translate3d(120%, 0, 0); } }
+
+/* Símbolo MTH do rodapé: desenha o traço ao entrar, preenche e depois pulsa o degradê. */
+.mth-stroke { opacity: 0; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.reveal-pending .mth-fill { opacity: 0; }
+.reveal-in .mth-stroke { animation: mth-draw 1.5s cubic-bezier(.65, 0, .35, 1) both; }
+.reveal-in .mth-fill { animation: reveal-fade .7s ease 1s both; }
+.mth-pulse { opacity: 0; }
+.reveal-in .mth-pulse { animation: mth-pulse 3.6s ease-in-out 2.2s infinite; }
+@keyframes mth-draw {
+  0% { opacity: 1; stroke-dashoffset: 1; }
+  70% { opacity: 1; stroke-dashoffset: 0; }
+  100% { opacity: 0; stroke-dashoffset: 0; }
+}
+@keyframes mth-pulse { 0%, 100% { opacity: 0; } 50% { opacity: .6; } }
+
+/* Logo do header: micro animação no toque (afunda e gira de leve, volta com um quique). */
+.logo-tap img { transition: transform .45s cubic-bezier(.34, 1.56, .64, 1); }
+.logo-tap:active img { transform: scale(.86) rotate(-10deg); transition-duration: .12s; }
+
+/* Seção abaixo da dobra: o navegador pula o trabalho de renderização até ela se aproximar.
+   Só no rodapé: nas seções do meio, um tamanho estimado errado faria o menu pular para o lugar errado. */
+.cv-auto { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tech-float, .brand-card::after, .mth-pulse, .reveal-in .mth-pulse, .logo-float { animation: none !important; }
+  .reveal-in .reveal-item, .reveal-in .reveal-item.reveal-scale { animation-name: reveal-fade; animation-delay: 0s; }
+  .reveal-in .mth-stroke { animation: none; }
+  .reveal-in .mth-fill { animation: reveal-fade .4s ease both; }
+  .tech-icon, .logo-tap img { transition: none; }
+}
